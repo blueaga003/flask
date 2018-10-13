@@ -24,7 +24,7 @@ def start_here():
       <html>
         <body>
         Hi! This is the home page. <br>
-        <a href="https://localhost:5000/hello/">Take me to submit name</a>
+        <a href="http://0.0.0.0:5000/hello">Take me to submit name</a>
         </body>
       </html>
     """
@@ -44,34 +44,93 @@ def say_hello():
         <h1>Hi There!</h1>
         <form action="/greet">
           What's your name? <input type="text" name="person">
+          Compliments:
+            <select name="compliments">
+            <option value="awesome">Awesome</option>
+            <option value="terrific">Terrific</option>
+            <option value="fantastic">Fantastic</option>
+            <option value="neato">Neato</option>
+            <option value="fantabulous">Fantabulous</option>
+            <option value="wowza">Wowza</option>
+            <option value="oh-so-not-meh">Oh-Not-So-Meh</option>
+            <option value="brilliant">Brilliant</option>
+            <option value="ducky">Ducky</option>
+            <option value="coolio">Coolio</option>
+            <option value="incredible">Incredible</option>
+            <option value="wonderful">Wonderful</option>
+            <option value="smashing">Smashing</option>
+            <option value="lovely">Lovely</option>
+          </select>
           <input type="submit" value="Submit">
+          <br>
+          <a href="http://0.0.0.0:5000/diss">Orrrrr you can go here!</a>
+
         </form>
       </body>
     </html>
     """
 
+@app.route("/diss")
+def get_diss():
+  """Prompt user for diss."""
+
+  return """
+  <!doctype html>
+    <html>
+      <head>
+        <title>Hi There!</title>
+      </head>
+      <body>
+        <h1>Hi There!</h1>
+        <form action="/greet">
+          What's your name? <input type="text" name="person">
+          Disses:
+            <select name="disses">
+            <option value="boo">Boo</option>
+            <option value="lame">Lame</option>
+            <option value="icky">Icky</option>
+          </select>
+          <input type="submit" value="Submit">
+
+        </form>
+      </body>
+    </html>
+    """
 
 @app.route("/greet")
 def greet_person():
     """Get user by name."""
 
     player = request.args.get("person")
+    niceness = request.args.get("compliments")
+    insult = request.args.get("disses")
+    # compliment = choice(AWESOMENESS)
 
-    compliment = choice(AWESOMENESS)
+    if insult ==  None:
+       return """
+        <!doctype html>
+        <html>
+          <head>
+            <title>A Compliment</title>
+          </head>
+          <body>
+            Hi, {}! I think you're {}!
+          </body>
+        </html>
+        """.format(player, niceness)
+    else:
+        return """
+        <!doctype html>
+        <html>
+          <head>
+            <title>A Compliment</title>
+          </head>
+          <body>
+            Hi, {}! I think you're {}!
+          </body>
+        </html>
+        """.format(player, insult)
 
-    y = x
-
-    return """
-    <!doctype html>
-    <html>
-      <head>
-        <title>A Compliment</title>
-      </head>
-      <body>
-        Hi, {}! I think you're {}!
-      </body>
-    </html>
-    """.format(player, compliment)
 
 
 if __name__ == "__main__":
